@@ -9,6 +9,29 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="keys.js"></script>
     <script>
+   
+     var ncmba = new NCMB(appKey, clientKey);//NCMBのままでいい不明
+     var TestClass = ncmba.DataStore ("UpdateTest");
+     var keyA = "btnA";
+    function btnAData() {
+      var testClass = new TestClass();
+     // var key = $("#field").val();
+      var value = $("#btnA").val();
+      // レコードのフィールドと値を設定
+      testClass.set(keyA, value)
+      .save()
+      .then(function(results){
+        $("#display").removeClass();
+        $("#display").addClass("bg-success");
+        $("#display").html("enter success");
+      })
+      .catch(function(results){
+        $("#display").removeClass();
+        $("#display").addClass("bg-warning");
+        $("#display").html("enter fail");
+      })
+    }
+   
     let ncmb = new NCMB(appKey, clientKey);
     let UTdata = ncmb.DataStore("UpdateTest");
     let key = "score";
@@ -115,8 +138,12 @@
 </head>
 <body>
   <h1 class="text-light bg-secondary">mbaas update</h1>
+  <div id="button">
+    <input type="text" id="btnA" placeholder="文字列"> 
+     <a onclick="btnAData()" class="btn btn-outline-secondary" role="button">Enter</a>
+  </div>
   <div>
-    <input type="text" id="data" placeholder="name"> 
+    <input type="text" id="data" placeholder="数字"> 
     <a onclick="enterData()" class="btn btn-outline-secondary" role="button">Enter</a>
   </div>
   <div>
