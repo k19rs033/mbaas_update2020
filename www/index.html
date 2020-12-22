@@ -9,29 +9,7 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="keys.js"></script>
     <script>
-   
-     var ncmba = new NCMB(appKey, clientKey);//NCMBのままでいい不明
-     var TestClass = ncmba.DataStore ("UpdateTest");
-     var keyA = "btnA";
-    function btnAData() {
-      var testClass = new TestClass();
-     // var key = $("#field").val();
-      var value = $("#btnA").val();
-      // レコードのフィールドと値を設定
-      testClass.set(keyA, value)
-      .save()
-      .then(function(results){
-        $("#display").removeClass();
-        $("#display").addClass("bg-success");
-        $("#display").html("enter success");
-      })
-      .catch(function(results){
-        $("#display").removeClass();
-        $("#display").addClass("bg-warning");
-        $("#display").html("enter fail");
-      })
-    }
-   
+
     let ncmb = new NCMB(appKey, clientKey);
     let UTdata = ncmb.DataStore("UpdateTest");
     let key = "score";
@@ -50,7 +28,23 @@
         $("#display").addClass("bg-warning");
         $("#display").html("enter fail");
       })
+
+      let a = $("#data").val();
+      uTdata.set(key, a)
+      .save()
+      .then(function(results){
+        $("#display").removeClass();
+        $("#display").addClass("bg-success");
+        $("#display").html("enter success");
+      })
+      .catch(function(results){
+        $("#display").removeClass();
+        $("#display").addClass("bg-warning");
+        $("#display").html("enter fail");
+      })
+
     }
+  
     function fetchAll() {
       UTdata.fetchAll()
       .then(function(results){
@@ -68,24 +62,7 @@
         $("#display").addClass("bg-warning");
         $("#display").html("delete fail:" + JSON.stringify(error));
       })
- 
-      TestClass.fetchAll()
-      .then(function(results){
-        var msga="";
-        for(var i=0; i<results.length; i++){
-          msga += results[i].get(keyA) + "<br>";
-        }
-        $("#display").removeClass();
-        $("#display").addClass("text-light");
-        $("#display").addClass("bg-primary");
-        $("#display").html(msga);
-      })
-      .catch(function(error){
-        $("#display").removeClass();
-        $("#display").addClass("bg-warning");
-        $("#display").html("delete fail:" + JSON.stringify(error));
-      })
-      
+
     }
     function deleteData() {
       UTdata.fetch()
@@ -108,6 +85,8 @@
       .then(function(uTdata){
         let value = parseInt($("#update").val());
         uTdata.set(key,value);
+        let a = ($("#update").val());
+        uTdata.set(key,a);
         return uTdata.update();
       })
       .then(function(results){
@@ -120,6 +99,7 @@
         $("#display").addClass("bg-warning");
         $("#display").html("update fail:" + JSON.stringify(error));
       })
+
     }
     function countData() {
       UTdata.count().fetchAll()
@@ -156,10 +136,6 @@
 </head>
 <body>
   <h1 class="text-light bg-secondary">mbaas update</h1>
-  <div id="button">
-    <input type="text" id="btnA" placeholder="文字列"> 
-     <a onclick="btnAData()" class="btn btn-outline-secondary" role="button">Enter</a>
-  </div>
   <div>
     <input type="text" id="data" placeholder="数字"> 
     <a onclick="enterData()" class="btn btn-outline-secondary" role="button">Enter</a>
