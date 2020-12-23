@@ -15,7 +15,8 @@
     let key = "score";
     function enterData() {
       let uTdata = new UTdata();
-      let value = parseInt($("#data").val());
+      //let value = parseInt($("#data").val());
+       let value = $("#data").val();
       uTdata.set(key, value)
       .save()
       .then(function(results){
@@ -28,7 +29,7 @@
         $("#display").addClass("bg-warning");
         $("#display").html("enter fail");
       })
-
+/*
       let a = $("#data").val();
       uTdata.set(key, a)
       .save()
@@ -42,7 +43,7 @@
         $("#display").addClass("bg-warning");
         $("#display").html("enter fail");
       })
-
+*/
     }
   
     function fetchAll() {
@@ -115,12 +116,13 @@
       })
     }
     function sortData() {
-      UTdata.order(key,true).fetchAll()
+      UTdata.order(key,false).fetchAll()
       .then(function(results){
         let msg="";
         for(let i=0; i<results.length; i++){
           msg += results[i].get(key) + "<br>";
         }
+
         $("#display").removeClass();
         $("#display").addClass("text-light");
         $("#display").addClass("bg-primary");
@@ -132,12 +134,38 @@
         $("#display").html("delete fail:" + JSON.stringify(error));
        })
     }
+
+    function searchData(){
+       UTdata.fetchAll()
+      .then(function(results){
+        let msg="";
+        var input_message = document.getElementById("name").value;
+       
+        for(let i=0; i<results.length; i++){
+           let result = results[i].get(key).indexOf(input_message);
+           console.log(result);
+         if(result!=-1){
+            msg += results[i].get(key) + "<br>";
+          }
+        }
+        $("#display").removeClass();
+        $("#display").addClass("text-light");
+        $("#display").addClass("bg-primary");
+        $("#display").html(msg);
+      })
+      .catch(function(error){
+        $("#display").removeClass();
+        $("#display").addClass("bg-warning");
+        $("#display").html("delete fail:" + JSON.stringify(error));
+      })
+    }
+
     </script>
 </head>
 <body>
   <h1 class="text-light bg-secondary">mbaas update</h1>
   <div>
-    <input type="text" id="data" placeholder="数字"> 
+    <input type="text" id="data" placeholder="メッセージ"> 
     <a onclick="enterData()" class="btn btn-outline-secondary" role="button">Enter</a>
   </div>
   <div>
@@ -145,6 +173,10 @@
     <a onclick="deleteData()" class="btn btn-outline-secondary" role="buton">Delete</a>
     <a onclick="countData()" class="btn btn-outline-secondary" role="button">Count</a>
     <a onclick="sortData()" class="btn btn-outline-secondary" role="button">Sort</a>
+  </div>
+  <div>
+    <input type="text" id="name" placeholder="キーワード"> 
+    <a onclick="searchData()" class="btn btn-outline-secondary" role="button">Seach</a>
   </div>
   <div>
     <input type="text" id="update" placeholder="更新">
